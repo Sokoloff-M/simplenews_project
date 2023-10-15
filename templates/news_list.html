@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список новостей</title>
+</head>
+<body>
+    <h1>Список новостей</h1>
+    <ul>
+        {% for news in news_list %}
+            <li>
+                <a href="{% url 'news_detail' news.id %}">{{ news.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+<script>
+  // Функция для получения списка новостей с помощью AJAX-запроса
+  function fetchNews() {
+    const newsList = document.getElementById('news-list');
+    newsList.innerHTML = 'Загрузка...'; // Оповещение пользователя о загрузке
+
+    // Выполняем AJAX-запрос к API
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/news/', true); // Замените на URL вашего API
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        displayNews(data);
+      } else {
+        newsList.innerHTML = 'Ошибка загрузки новостей.';
+      }
+    };
+    xhr.send();
+  }
+
+  // Функция для отображения списка новостей на странице
+  function displayNews(news) {
+    const newsList = document.getElementById('news-list');
+    newsList.innerHTML = ''; // Очищаем текущий список
+
+    if (news.length === 0) {
+      newsList.innerHTML = 'Новостей нет.';
+    } else {
+      news.forEach((item) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<a href="/news/${item.id}">${item.title}</a>`;
+        newsList.appendChild(listItem);
+      });
+    }
+  }
+
+  // Вызываем функцию для получения списка новостей при загрузке страницы
+  window.onload = fetchNews;
+</script>

@@ -17,6 +17,7 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import NewsViewSet, CommentViewSet
+from .views import NewsListView,NewsDetailView
 
 router = DefaultRouter()
 router.register(r'news', NewsViewSet)
@@ -24,4 +25,8 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/news/', views.NewsListAPIView.as_view(), name='news-list-api'),
+    path('api/news/<int:pk>/', views.NewsDetailAPIView.as_view(), name='news-detail-api'),
+
+
 ]

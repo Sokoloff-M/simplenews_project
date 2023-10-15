@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ news.title }}</title>
+</head>
+<body>
+    <h1>{{ news.title }}</h1>
+    <p>{{ news.content }}</p>
+    <p>Дата публикации: {{ news.pub_date }}</p>
+    <a href="{% url 'news_list' %}">Вернуться к списку новостей</a>
+</body>
+</html>
+<script>
+  // Функция для получения отдельной новости
+  function fetchNewsDetail() {
+    const newsId = /* Извлеките идентификатор новости из URL или другого источника */;
+    fetch(`/api/news/${newsId}/`) // Замените на URL вашего API
+      .then(response => response.json())
+      .then(news => {
+        // Обновите DOM, отображая данные отдельной новости
+        const newsTitle = document.getElementById('news-title');
+        const newsContent = document.getElementById('news-content');
+        const pubDate = document.getElementById('pub-date');
+
+        newsTitle.textContent = news.title;
+        newsContent.textContent = news.content;
+        pubDate.textContent = `Дата публикации: ${news.pub_date}`;
+      });
+  }
+
+  // Вызываем функцию при загрузке страницы
+  window.onload = fetchNewsDetail;
+</script>
