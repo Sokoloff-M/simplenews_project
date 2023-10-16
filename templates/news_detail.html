@@ -8,12 +8,33 @@
     <p>{{ news.content }}</p>
     <p>Дата публикации: {{ news.pub_date }}</p>
     <a href="{% url 'news_list' %}">Вернуться к списку новостей</a>
+<h1>{{ news.title }}</h1>
+<p>{{ news.content }}</p>
+<p>Дата публикации: {{ news.pub_date }}</p>
+
+<!-- Форма для добавления комментария -->
+<form method="post" action="{% url 'add_comment' news.pk %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Добавить комментарий</button>
+</form>
+
+<!-- Список комментариев -->
+<ul>
+    {% for comment in news.comments.all %}
+        <li>
+            {{ comment.text }}
+            <p>Дата добавления: {{ comment.pub_date }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
 </body>
 </html>
 <script>
   // Функция для получения отдельной новости
   function fetchNewsDetail() {
-    const newsId = /* Извлеките идентификатор новости из URL или другого источника */;
+   const newsId = window.location.pathname.split('/').pop();
     fetch(`/api/news/${newsId}/`) // Замените на URL вашего API
       .then(response => response.json())
       .then(news => {

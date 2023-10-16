@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/news/', views.NewsListAPIView.as_view(), name='news-list-api'),
     path('api/news/<int:pk>/', views.NewsDetailAPIView.as_view(), name='news-detail-api'),
+    path('news/<int:pk>/add_comment/', views.add_comment, name='add_comment'),
 
 
 ]
